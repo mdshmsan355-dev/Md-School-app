@@ -40,6 +40,9 @@ jobs:
         working-directory: Md-School
         run: npm run build
 
+      - name: Copy mobile build helpers
+        run: cp -r build/mobile Md-School/build
+
       - name: Prepare mobile build
         working-directory: Md-School
         run: node build/mobile/prepare.mjs
