@@ -40,12 +40,13 @@ jobs:
         working-directory: Md-School
         run: npm run build
 
-      - name: Copy mobile build helpers
-        run: cp -r build/mobile Md-School/build
-
       - name: Prepare mobile build
-        working-directory: Md-School
-        run: node build/mobile/prepare.mjs
+        run: |
+          cp build/mobile/index.html Md-School/index.html
+          cp build/mobile/mobile-main.tsx Md-School/src/mobile-main.tsx
+          cp build/mobile/vite.mobile.config.ts Md-School/vite.mobile.config.ts
+          node -e "const fs=require('fs'); const p='Md-School/package.json'; const x=JSON.parse(fs.readFileSync(p,'utf8')); x.scripts={...x.scripts,'build:mobile':'vite build --config vite.mobile.config.ts'}; fs.writeFileSync(p,JSON.stringify(x,null,2)+'\n')"
+          sed -i 's/webDir: "[^"]*"/webDir: "mobile-dist"/' Md-School/capacitor.config.ts
 
       - name: Build mobile web bundle
         working-directory: Md-School
