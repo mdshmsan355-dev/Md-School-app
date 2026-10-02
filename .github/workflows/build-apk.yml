@@ -26,8 +26,11 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Check Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls "$ANDROID_HOME/platforms" | tail -n 3
+          ls "$ANDROID_HOME/build-tools" | tail -n 3
 
       - name: Install dependencies
         working-directory: Md-School
