@@ -40,6 +40,14 @@ jobs:
         working-directory: Md-School
         run: npm run build
 
+      - name: Prepare mobile build
+        working-directory: Md-School
+        run: node build/mobile/prepare.mjs
+
+      - name: Build mobile web bundle
+        working-directory: Md-School
+        run: npm run build:mobile
+
       - name: Add Android platform
         working-directory: Md-School
         run: npx cap add android
