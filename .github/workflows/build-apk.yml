@@ -1,0 +1,58 @@
+name: Build Md School APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract project
+        run: unzip -q Md-School-ready-to-build.zip
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Md-School/package-lock.json
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        working-directory: Md-School
+        run: npm install
+
+      - name: Build web app
+        working-directory: Md-School
+        run: npm run build
+
+      - name: Add Android platform
+        working-directory: Md-School
+        run: npx cap add android
+
+      - name: Sync Capacitor
+        working-directory: Md-School
+        run: npx cap sync android
+
+      - name: Build APK
+        working-directory: Md-School/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Md-School-APK
+          path: Md-School/android/app/build/outputs/apk/debug/app-debug.apk
