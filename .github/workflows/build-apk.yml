@@ -15,6 +15,9 @@ jobs:
       - name: Extract project
         run: unzip -q Md-School-ready-to-build.zip
 
+      - name: Apply audited database integrity fix
+        run: cp audit-overrides/0011_result_snapshot_integrity.sql Md-School/drizzle/migrations/0011_result_snapshot_integrity.sql
+
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
