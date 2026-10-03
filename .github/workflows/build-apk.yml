@@ -8,6 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || secrets.SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHABLE_KEY || secrets.ANON_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL || secrets.VITE_SUPABASE_URL }}
+      SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY || secrets.VITE_SUPABASE_PUBLISHABLE_KEY || secrets.ANON_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -17,6 +22,12 @@ jobs:
 
       - name: Apply audited database integrity fix
         run: cp audit-overrides/0011_result_snapshot_integrity.sql Md-School/drizzle/migrations/0011_result_snapshot_integrity.sql
+
+      - name: Check Supabase configuration
+        run: |
+          test -n "$VITE_SUPABASE_URL" || { echo "::error::Supabase URL is not configured in GitHub Secrets"; exit 1; }
+          test -n "$VITE_SUPABASE_PUBLISHABLE_KEY" || { echo "::error::Supabase publishable key is not configured in GitHub Secrets"; exit 1; }
+          echo "Supabase client configuration is present."
 
       - name: Setup Java
         uses: actions/setup-java@v5
