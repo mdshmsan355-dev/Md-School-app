@@ -9,10 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-            VITE_      SUPABASE_URL: https://vhgdpcducyjwalrnnkld.supabase.co
-            VITE_      SUPABASE_PUBLISHABLE_KEY: sb_publishable_S2DS2M4HPkqdQlcSHpedCw_GWU2EwoV
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL || secrets.VITE_SUPABASE_URL }}
-      SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY || secrets.VITE_SUPABASE_PUBLISHABLE_KEY || secrets.ANON_KEY }}
+      VITE_SUPABASE_URL: https://vhgdpcducyjwalrnnkld.supabase.co
+      VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_S2DS2M4HPkqdQlcSHpedCw_GWU2EwoV
+      SUPABASE_URL: https://vhgdpcducyjwalrnnkld.supabase.co
+      SUPABASE_PUBLISHABLE_KEY: sb_publishable_S2DS2M4HPkqdQlcSHpedCw_GWU2EwoV
     steps:
       - name: Checkout
         uses: actions/checkout@v5
